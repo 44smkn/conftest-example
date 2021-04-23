@@ -8,5 +8,5 @@ spec:
   ports:
     - port: 8080
   selector:
-    app: sbdemo
+    app: sbdemos
   type: LoadBalancer
