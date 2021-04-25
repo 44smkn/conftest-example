@@ -22,11 +22,12 @@ deny[msg] {
 
 # serviceのselectorのlabelがDeploymentの.spec.tempalate.metadata.labelsに含まれるかを確認する
 deny[msg] {
-	one := input[_][_]
-	other := input[_][_]
-	one.kind == "Service"
-	other.kind == "Deployment"
+	input[deployment].contents.kind == "Deployment"
+	deployment := input[deployment].contents
 
-	one.spec.selector.app != other.spec.template.metadata.labels.app
-	msg := sprintf("label is different! service: %s <=>  deployment: %s", [one.metadata.name, other.metadata.name])
+	input[service].contents.kind == "Service"
+	service := input[service].contents
+
+	service.spec.selector.app != deployment.spec.template.metadata.labels.app
+	msg := sprintf("label is different! service: %s <=>  deployment: %s", [service.metadata.name, deployment.metadata.name])
 }
